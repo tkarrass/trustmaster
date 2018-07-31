@@ -284,10 +284,36 @@ func (trm *trustmaster) Trust(googleid string, generictoken *AccessToken) (*Trus
 	}
 	trust := &Trust{}
 	rdata, _ := ioutil.ReadAll(ret.Body)
+
 	log.Debug(string(rdata[:]))
 	err = json.Unmarshal(rdata, trust)
 	if err != nil {
 		return nil, err
 	}
 	return trust, nil
+}
+
+// Retrieve public key used for access_token verification
+func (trm *trustmaster) SigningKey() (*SigningKey, error) {
+	c := http.Client{}
+	url := fmt.Sprintf("%v/api/meta/keys", api_base)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	ret, err := c.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if ret.StatusCode != 200 {
+		return nil, errors.New(ret.Status)
+	}
+	key := &SigningKey{}
+	rdata, _ := ioutil.ReadAll(ret.Body)
+	log.Debug(string(rdata[:]))
+	err = json.Unmarshal(rdata, key)
+	if err != nil {
+		return nil, err
+	}
+	return key, nil
 }

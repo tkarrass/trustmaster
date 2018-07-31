@@ -24,8 +24,7 @@ const TrustmasterRedirectUri = "https://example.com/oauth/callback"
 func main() {
 	log.SetLevel(log.InfoLevel) // you could set to DebugLevel to see raw http responses in the logs for debugging
 
-	tm, err := trustmaster.NewClient(TrustmasterClientId, TrustmasterClientSecret, TrustmasterRedirectUri)
-
+  	tm, err := trustmaster.NewClient(TrustmasterClientId, TrustmasterClientSecret, TrustmasterRedirectUri)
 	if err != nil {
 		log.WithError(err).Fatal("cannot get trustmaster instance")
 	}

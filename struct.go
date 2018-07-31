@@ -1,6 +1,11 @@
 package trustmaster
 
-import "time"
+import (
+	"time"
+	"strings"
+	"encoding/base64"
+	"crypto/x509"
+)
 
 type AccessToken struct {
 	Token string  `json:"access_token"`
@@ -62,3 +67,39 @@ type TrustSummary struct {
 	// ... ????
 }
 
+type SigningKey struct {
+	Pubkey string `json:"oauth-public"`
+}
+
+func (key SigningKey) KeyBytes() ([]byte, error) {
+	sdata := strings.TrimSpace(key.Pubkey)
+	sdata = strings.TrimPrefix(sdata, "-----BEGIN PUBLIC KEY-----\n")
+	sdata = strings.TrimSuffix(sdata, "\n-----END PUBLIC KEY-----")
+	bdata := []byte(sdata)
+	d := make([]byte, base64.StdEncoding.DecodedLen(len(bdata)))
+	n, err := base64.StdEncoding.Decode(d, bdata)
+	if err != nil {
+		return nil, err
+	}
+	d = d[:n]
+	k, err :=x509.ParsePKIXPublicKey(d)
+	if err != nil {
+		return nil, err
+	}
+	kbytes, ok :=  k.([]byte)
+	if !ok {
+		return nil, err
+	}
+	return kbytes, nil
+}
+
+
+type Webhook struct {
+	Tag string `json:"tga"`
+	Data *WebhookData `json:"data"`
+}
+
+type WebhookData struct {
+	GoogleId string `json:"google_id"`
+	Timestamp string `json:"timestamp"`
+}
