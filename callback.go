@@ -94,9 +94,9 @@ func (webhook WebhookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 	}
 	t, err := time.Parse("2006-01-02T15:04:05-0700", hook.Data.Timestamp)
 	ev := WebhookEvent{
-	hook.Tag,
-	t,
-	hook.Data.GoogleId,
+	Tag: hook.Tag,
+	Timestamp: t,
+	GoogleId: hook.Data.GoogleId,
 	}
 	webhook.Events <- ev
 	w.WriteHeader(200)
