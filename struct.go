@@ -95,7 +95,7 @@ func (key SigningKey) KeyBytes() ([]byte, error) {
 
 
 type Webhook struct {
-	Tag string `json:"tga"`
+	Tag string `json:"tag"`
 	Data *WebhookData `json:"data"`
 }
 

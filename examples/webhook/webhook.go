@@ -39,7 +39,7 @@ func main() {
 
 	go func() {
 		for ev := range handler.Events {
-			log.Info("Trust status changed for user %v", ev.GoogleId)
+			log.Infof("Trust status changed for user %v", ev.GoogleId)
 			trust, err := tm.Trust(ev.GoogleId, gtoken)
 			if err != nil {
 				log.WithError(err).Error("cannot get trust information")

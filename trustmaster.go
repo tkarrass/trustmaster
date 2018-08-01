@@ -270,6 +270,7 @@ func (trm *trustmaster) Trust(googleid string, generictoken *AccessToken) (*Trus
 	}
 	c := http.Client{}
 	url := fmt.Sprintf("%v/api/v2/user/%v/trust", api_base, googleid)
+	log.Debug(url)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
