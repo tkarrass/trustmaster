@@ -49,7 +49,7 @@ type Telegram struct {
 }
 
 type Trust struct {
-	Generation uint `json:"generation"`
+	Generation int `json:"generation"`
 	GoogleId string `json:"google_id"`
 	NewestTrust *TrustDecision `json:"newest_trust"`
 	Trust *TrustDecision `json:"trust"`
