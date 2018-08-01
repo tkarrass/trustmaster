@@ -337,7 +337,7 @@ func (trm *trustmaster) Decisions(generictoken *AccessToken) (*Decisions, error)
 	dec := &Decisions{}
 	rdata, _ := ioutil.ReadAll(ret.Body)
 	log.Debug(string(rdata[:]))
-	err l= json.Unmarshal(rdata, dec)
+	err = json.Unmarshal(rdata, dec)
 	if err != nil {
 		return nil, err
 	}
