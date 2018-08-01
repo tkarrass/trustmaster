@@ -318,3 +318,28 @@ func (trm *trustmaster) SigningKey() (*SigningKey, error) {
 	}
 	return key, nil
 }
+
+func (trm *trustmaster) Decisions(generictoken *AccessToken) (*Decisions, error) {
+	c := http.Client{}
+	url := fmt.Sprintf("%v/api/v2/trust/decisions", api_base)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add( "Authorization", fmt.Sprintf("Bearer %v", generictoken.Token))
+	ret, err := c.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if ret.StatusCode != 200 {
+		return nil, errors.New(ret.Status)
+	}
+	dec := &Decisions{}
+	rdata, _ := ioutil.ReadAll(ret.Body)
+	log.Debug(string(rdata[:]))
+	err l= json.Unmarshal(rdata, dec)
+	if err != nil {
+		return nil, err
+	}
+	return dec, nil
+}

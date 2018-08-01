@@ -93,6 +93,12 @@ func (key SigningKey) KeyBytes() ([]byte, error) {
 	return kbytes, nil
 }
 
+type Decisions struct {
+	All []string `json:"all"`
+	Positive []string `json:"positive"`
+	Indeterminate []string `json:"indeterminate"`
+	Negative []string `json:"negative"`
+}
 
 type Webhook struct {
 	Tag string `json:"tag"`
